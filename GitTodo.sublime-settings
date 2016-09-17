@@ -1,0 +1,23 @@
+{
+	"patterns": {
+		"TODO": "TODO[\\s]*?:[\\s]*(?P<todo>.*)$"
+	},
+	"exclude_folders": [
+		"*.git*",
+		"node_modules"
+	],
+	"exclude_files": [
+		"*.sublime-workspace",
+		"*.sublime-project"
+	],
+	"github_details":{
+		"username": "username",
+		"password": "password",
+		"token": 	"insert access token here"
+	},
+	"projects_dir": "C:\\wamp64\\www\\",
+	"watch_projects":[
+		"supersecretproject",
+		"project1"
+	]
+}
