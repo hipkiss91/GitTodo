@@ -1,5 +1,5 @@
 # GitTodo
-A SublimeText plugin for automatically commiting issues to GitHub.
+Allows developers within SublimeText 3 to automatically publish issues to a public repo on github through the use of properly formatted TODO's.
 
 # Install
 GitTodo is currently only available here. I am looking at getting it in the sublime package control.
