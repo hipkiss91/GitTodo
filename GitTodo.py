@@ -210,9 +210,7 @@ class GitTodoFindCommand(sublime_plugin.TextCommand):
 
 	def create_issue(username, repo, session, todo):
 		# issue = {'filename'	:	todo_file, 'title': 'title', 'assignee':'hipkiss91', 'body':'body', 'labels':['labels']}
-		print(username, repo)
-		url = 'https://api.github.com/repos/' + username + '/Dayamo/issues'
-		# url = 'https://api.github.com/repos/' + username + '/' + repo + '/issues'
+		url = 'https://api.github.com/repos/' + username + '/' + repo + '/issues'
 		issue = {'title': todo[0]['title'], 'assignee': todo[0]['assignee'], 'body': todo[0]['filename'] + '.\n' + todo[0]['body'], 'labels': todo[0]['labels']}
 		req = session.post(url, json.dumps(issue))
 		return req.status_code
