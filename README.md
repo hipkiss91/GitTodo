@@ -20,7 +20,7 @@ The current format of accepted `TODO's` are as follows:
 
 
 # Config
-An example of the current configuration is available in the plugin and is as below. It allows a user to specify both files and folders to exclude as well as github accoutn details for connecting and generating the issues. A project directory and projects within that directory can also be specified. Furthermore, if a user has not added there project to the list then a user may still create issues, for that project, by using the command `ctrl+alt+t` and given that the config details remain the same.
+An example of the current configuration is available in the plugin and is as below. It allows a user to specify both files and folders to exclude as well as github account details for connecting and generating the issues. A project directory and projects within that directory can also be specified. Furthermore, if a user has not added there project to the list then a user may still create issues, for that project, by using the command `ctrl+alt+t` and given that the config details remain the same.
 
 ```
 {
@@ -49,7 +49,7 @@ An example of the current configuration is available in the plugin and is as bel
 
 ```
 
-## Current issues know and actively working on:
+## Current issues known and actively being worked on:
 
 ```
 # TODO: Process multi-line TODO's.
