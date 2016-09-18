@@ -49,7 +49,7 @@ An example of the current configuration is available in the plugin and is as bel
 
 ```
 
-## Current issues known and actively being worked on:
+## Current known issues/improvements actively being worked on:
 
 ```
 # TODO: Process multi-line TODO's.
@@ -59,6 +59,9 @@ An example of the current configuration is available in the plugin and is as bel
 # TODO: Change/Alter Issues
 # TODO: Delete Issues
 # TODO: Account for bugs using the prefix 'FIXME'.
+# TODO: Transform 'todos' into one condition.
+# TODO: Transform array of files to filter in/out.
+# TODO: Define a classic annotation pattern.
 ```
 
 
