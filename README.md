@@ -24,9 +24,6 @@ An example of the current configuration is available in the plugin and is as bel
 
 ```
 {
-    "patterns": {
-        "TODO": "TODO[\\s]*?:[\\s]*(?P<todo>.*)$"
-    },
     "exclude_folders": [
         "*.git*",
         "node_modules"
