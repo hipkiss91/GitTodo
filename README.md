@@ -8,6 +8,7 @@ Allows developers within SublimeText 3 to automatically publish issues to a publ
 - Transform array of files to filter in/out.
 - Define a classic annotation pattern.
 - Other (See messages/0.2.0.txt)
+- "Review" has been added as parameter. This means all TODO's will be written to file but only correctly formatted todo's will be submitted as an issue.
 ```
 
 # Install
