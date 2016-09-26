@@ -7,6 +7,7 @@ Allows developers within SublimeText 3 to automatically publish issues to a publ
 - Transform 'todos' into one condition.
 - Transform array of files to filter in/out.
 - Define a classic annotation pattern.
+- Other (See messages/0.2.0.txt)
 ```
 
 # Install
