@@ -1,18 +1,32 @@
 {
-	"patterns": {
-		"TODO": "TODO[\\s]*?:[\\s]*(?P<todo>.*)$"
-	},
 	"exclude_folders": [
-		"*.git*",
-		"node_modules"
+		".git",
+		"node_modules",
+		"images",
+		"fonts",
+		"lib",
+		"libs",
+		"Examples",
+		"sass",
+		"ie"
 	],
 	"exclude_files": [
-		"*.sublime-workspace",
-		"*.sublime-project"
+		"*.gitignore",
+		"*.json",
+		"*.md",
+		"*.txt",
+		"*.jpg",
+		"*.png",
+		"*.htc",
+		"*.svg",
+		"*.gif",
+		"*.min.js",
+		"*.min.css",
+		"*.map"
 	],
 	"github_details":{
-		"username": "username",
-		"password": "password",
+		"username": "hipkiss91",
+		"password": "NuFwZoIbJgTh7RrT",
 		"token": 	"insert access token here"
 	},
 	"projects_dir": "C:\\wamp64\\www\\",
