@@ -1,0 +1,20 @@
+GitTodo 0.2.0
+--------------------
+
+This update includes the following:
+
+- Added todos as an array instead of long if statement.
+- Added filenames to the todo's.
+- Added line number to the todo's.
+- Remove files from search path.
+- Remove folders from search path.
+- Print each todo to the gittodo.txt file correctly.
+- Exclude *.min.* file extensions as well.
+- Removed unwanted weirdness from bootstrap.
+- Created a class for each todo found.
+- Added review parameter to todo class for submission = true/false
+- Corrected issues with body submitting to every parameter in todo class.
+- Allow for partially formatted todos.
+- Improve the robustness of selecting todo components.
+- Printed the body correctly for badly formatted todos.
+- Check for duplicate todos.
