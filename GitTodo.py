@@ -217,11 +217,21 @@ class GitTodoFindCommand(sublime_plugin.TextCommand):
 		return session
 
 	def create_issue(username, repo, session, todo):
-		url = 'https://api.github.com/repos/' + username + '/' + repo + '/issues'
-		issue = {'title': todo.title,
-				 'assignee': todo.assignee,
-				 'body': todo.line + '.   ' + todo.filename + '.\n' + todo.body,
-				 'labels': todo.labels}
+		# url = 'https://api.github.com/repos/' + username + '/' + repo + '/issues'
+		issue = {}
+		issue['title'] = todo.title
+		if todo.assignee is not None:
+			issue['assignee'] = todo.assignee
+		line = 'line: ' + str(todo.line)+ '.  File: ' + todo.filename + '.\n'
+		if todo.body is not None:
+			issue['body'] = line + todo.body
+		else:
+			issue['body'] = line
+		if todo.labels is not None:
+			issue['labels'] = todo.labels
+		if todo.milestone is not None:
+			pass
+			# issue['milestone'] = todo.milestone
 		req = session.post(url, json.dumps(issue))
 		return req.status_code
 
