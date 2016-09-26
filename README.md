@@ -1,6 +1,14 @@
 # GitTodo
 Allows developers within SublimeText 3 to automatically publish issues to a public repo on github through the use of properly formatted TODO's.
 
+## v0.2.0 improvements:
+```
+- Include milestones.
+- Transform 'todos' into one condition.
+- Transform array of files to filter in/out.
+- Define a classic annotation pattern.
+```
+
 # Install
 GitTodo is currently only available here. I am looking at getting it in the sublime package control.
 
@@ -15,8 +23,8 @@ The list of `TODO's` generated for a given project can be reviewed, as JSON outp
 
 ## TODO Format
 The current format of accepted `TODO's` are as follows:
-`TODO: [TITLE] This is the description/body of the issue. @Assignee #bug #minor`
-### Note: Punctuation is important. Specifically the Full Stop [`.`] at the end of the description.
+`TODO: [TITLE] (This is the description/body of the issue.) @Assignee #bug #minor *milestone`
+### Note: Punctuation is important.
 
 
 # Config
@@ -24,41 +32,53 @@ An example of the current configuration is available in the plugin and is as bel
 
 ```
 {
-    "exclude_folders": [
-        "*.git*",
-        "node_modules"
-    ],
-    "exclude_files": [
-        "*.sublime-workspace",
-        "*.sublime-project"
-    ],
-    "github_details":{
-        "username": "username",
-        "password": "password",
-        "token":    "insert access token here"
-    },
-    "projects_dir": "C:\\wamp64\\www\\",
-    "watch_projects":[
-        "supersecretproject",
-        "project1"
-    ]
+	"exclude_folders": [
+		".git",
+		"node_modules",
+		"images",
+		"fonts",
+		"lib",
+		"libs",
+		"Examples",
+		"sass",
+		"ie"
+	],
+	"exclude_files": [
+		"*.gitignore",
+		"*.json",
+		"*.md",
+		"*.txt",
+		"*.jpg",
+		"*.png",
+		"*.htc",
+		"*.svg",
+		"*.gif",
+		"*.min.js",
+		"*.min.css",
+		"*.map"
+	],
+	"github_details":{
+		"username": "hipkiss91",
+		"password": "NuFwZoIbJgTh7RrT",
+		"token": 	"insert access token here"
+	},
+	"projects_dir": "C:\\wamp64\\www\\",
+	"watch_projects":[
+		"supersecretproject",
+		"project1"
+	]
 }
 
 ```
 
 ## Current known issues/improvements actively being worked on:
-
 ```
 # TODO: Process multi-line TODO's.
-# TODO: Include milestones.
 # TODO: Private github repos
 # TODO: Other git accounts.
 # TODO: Change/Alter Issues
 # TODO: Delete Issues
 # TODO: Account for bugs using the prefix 'FIXME'.
-# TODO: Transform 'todos' into one condition.
-# TODO: Transform array of files to filter in/out.
-# TODO: Define a classic annotation pattern.
 ```
 
 
