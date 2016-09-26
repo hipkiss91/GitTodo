@@ -79,7 +79,7 @@ An example of the current configuration is available in the plugin and is as bel
 # TODO: Private github repos
 # TODO: Other git accounts.
 # TODO: Change/Alter Issues
-# TODO: Delete Issues
+# TODO: Close Issues
 # TODO: Account for bugs using the prefix 'FIXME'.
 ```
 
