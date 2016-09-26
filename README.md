@@ -26,7 +26,7 @@ The list of `TODO's` generated for a given project can be reviewed, as JSON outp
 ## TODO Format
 The current format of accepted `TODO's` are as follows:
 `TODO: [TITLE] (This is the description/body of the issue.) @Assignee #bug #minor *milestone`
-### Note: Punctuation is important.
+### Note: Minimum requirements for submitting an issue is the `[TITLE]`. Description, assignee, labels and milestones are optional.
 
 
 # Config
@@ -61,8 +61,8 @@ An example of the current configuration is available in the plugin and is as bel
 	],
 	"github_details":{
 		"username": "hipkiss91",
-		"password": "NuFwZoIbJgTh7RrT",
-		"token": 	"insert access token here"
+		"password": "password",
+		"token":    "token"
 	},
 	"projects_dir": "C:\\wamp64\\www\\",
 	"watch_projects":[
