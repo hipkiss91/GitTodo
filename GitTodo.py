@@ -47,7 +47,6 @@ class GitTodoFindCommand(sublime_plugin.TextCommand):
 	def run(self, edit):
 		# Gets current directory.
 		directories = get_setting('projects_dir', {})
-		projects = get_setting('watch_projects', [])
 		# Run on the current open window or if watch_projects is specified.
 		config = get_repo_details(self)
 		if config[0] == False:
