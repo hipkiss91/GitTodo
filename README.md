@@ -64,11 +64,7 @@ An example of the current configuration is available in the plugin and is as bel
 		"password": "password",
 		"token":    "token"
 	},
-	"projects_dir": "C:\\wamp64\\www\\",
-	"watch_projects":[
-		"supersecretproject",
-		"project1"
-	]
+	"projects_dir": "C:\\wamp64\\www\\"
 }
 
 ```
