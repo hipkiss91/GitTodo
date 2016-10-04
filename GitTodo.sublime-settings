@@ -29,9 +29,5 @@
 		"password": "password",
 		"token": 	"insert access token here"
 	},
-	"projects_dir": "C:\\wamp64\\www\\",
-	"watch_projects":[
-		"supersecretproject",
-		"project1"
-	]
+	"projects_dir": "C:\\wamp64\\www\\"
 }
