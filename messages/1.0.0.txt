@@ -1,0 +1,13 @@
+GitTodo v1.0.0
+--------------------
+
+This update includes the following:
+
+- Test class conditions for 'None' & prove github issue submission still correct.
+- NEW FEATURE:: Account for bugs using the prefix 'fixme'. Automatically adds 'bug' label.
+- Fix methods of initialisation.
+- Minor bug fixes/code improvements.
+- Seperate out get_repo_details regex for ease of reading.
+- Improve store_local_todos() method
+- Optimised process_line() method
+- Fix @Assginee doesn't register if at the end of the line.
