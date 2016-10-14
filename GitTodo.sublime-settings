@@ -26,8 +26,7 @@
 	],
 	"github_details":{
 		"username": "hipkiss91",
-		"password": "password",
-		"token": 	"insert access token here"
+		"password": "password"
 	},
 	"projects_dir": "C:\\wamp64\\www\\"
 }
