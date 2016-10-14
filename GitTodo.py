@@ -10,6 +10,8 @@ import traceback
 import fnmatch
 
 todos_array = ['Todo', 'TODO', 'todo']
+fixme_array = ['FIXME', 'Fixme', 'fixme', 'FixMe']
+unsupported = ['bitbucket', '192.168', '127.0', 'localhost']
 
 def get_setting(key, default=None):
 	settings = sublime.load_settings('GitTodo.sublime-settings')
@@ -24,34 +26,40 @@ def get_repo_details(self):
 	# only works on current open file
 	path, filename = os.path.split(self.view.file_name())
 
-	# Switch to cwd of file
+	# Switch to cmd of file
 	os.chdir(path + "/")
-	git_config_path = getoutput("git remote show origin -n")
-	p = re.compile(r"(.+: )*([\w\d\.]+)[:|@]/?/?(.*)")
+	GIT_SHOW_ORIGIN = "git remote show origin -n"
+	GIT_SHOW_ORIGIN_REGEX = "(.+: )*([\w\d\.]+)[:|@]/?/?(.*)"
+	git_config_path = getoutput(GIT_SHOW_ORIGIN)
+	p = re.compile(GIT_SHOW_ORIGIN_REGEX)
 	parts = p.findall(git_config_path)
+
 	if len(parts) == 0:
 		return(False, 'No git config found. Please initiate GIT in this project in order to sync todos and issues.')
 	else:
 		git_config = parts[0][2]
 
 	if ':' in git_config:
-		# SSH repository format: {domain}:{user}/{repo}.git
+		# SSH format: {domain}:{user}/{repo}.git
 		domain, user, repo = git_config.replace(".git", "").replace(":", "/").split("/")
 		return ('ssh', domain, user, repo)
 	else:
-		# HTTP repository format: {domain}/{user}/{repo}.git
+		# HTTP format: {domain}/{user}/{repo}.git
 		domain, user, repo = git_config.replace(".git", "").split("/")
 		return ('https', domain, user, repo)
 
 class GitTodoFindCommand(sublime_plugin.TextCommand):
 	def run(self, edit):
-		# Gets current directory.
-		directories = get_setting('projects_dir', {})
+		# Get projects directory.
+		directory = get_setting('projects_dir', {})
 		# Run on the current open window or if watch_projects is specified.
 		config = get_repo_details(self)
 		if config[0] == False:
 			return(print(config[1]))
-		GitTodoFindCommand.process_project(directories, config[3])
+		for support in unsupported:
+			if support in config[1]:
+				print(config[1] + ' Not currently supported')
+		GitTodoFindCommand.process_project(directory, config[3])
 
 	def process_project(project_dir, project):
 		dir_path = os.path.dirname(project_dir + project + '\\')
@@ -68,7 +76,10 @@ class GitTodoFindCommand(sublime_plugin.TextCommand):
 			for num, line in enumerate(file, 1): # Read each line in the file.
 				for todo in todos_array:
 					if todo in line: # Check each line for a 'todo'.
-						GitTodoFindCommand.process_line(filename, num, line, todo_array)
+						GitTodoFindCommand.process_line('todo', filename, num, line, todo_array)
+				for fix in fixme_array:
+					if fix in line: # Check each line for a 'fixme'.
+						GitTodoFindCommand.process_line('fixme', filename, num, line, todo_array)
 			if len(todo_array) > 0:
 				all_todos.append(todo_array)# append todos for each file into array of files.
 		GitTodoFindCommand.store_local_todos(project, all_todos, dir_path)
@@ -98,10 +109,12 @@ class GitTodoFindCommand(sublime_plugin.TextCommand):
 				return True
 		return False
 
-	def process_line(file, num, line, todo_array):
+	def process_line(line_type, file, num, line, todo_array):
 		mytodo = Gittodo()
 		mytodo.set_filename(file)
 		mytodo.set_line(num)
+		if line_type == 'fixme':
+			mytodo.set_labels('bug')
 		# This processes the line, it will return the correct object of format for each todo.
 		# todo: [TITLE] (Description of task goes here.) @someone #bug #minor *milestone
 		if not line.find('[') > 0 and not line.find(']', line.find('[')) > 0:
@@ -110,8 +123,7 @@ class GitTodoFindCommand(sublime_plugin.TextCommand):
 			for todo_case in todos_array:
 				if line.find(todo_case) > 0:
 					file_start = line.find(todo_case)
-			file_newline = line.find('\r\n')
-			if file_newline:
+			if line.find('\r\n'):
 				file_end = len(line) - 2
 			else:
 				file_end = len(line)
@@ -127,48 +139,29 @@ class GitTodoFindCommand(sublime_plugin.TextCommand):
 				mytodo.set_title(todo_title)
 			# Process the title. End
 
-			# Process the summary. START
+			# Process the body. START
 			if line.find('(') > 0 and line.find(')') > 0:
 				body_start = line.find('(') + 1
 				body_end = line.find(')')
 				todo_body = line[body_start:body_end]
 				mytodo.set_body(todo_body)
-			# Process the summary. End
+			# Process the body. End
 
-			# Process the owner. START
-			if line.find('@') > 0 and line.find(' ', line.find('@')) > 0:
-				assignee_start = line.find('@') + 1
-				assignee_end = line.find(' ', assignee_start)
-				todo_assignee = line[assignee_start:assignee_end]
-				mytodo.set_assignee(todo_assignee)
-			# Process the owner. End
-
-			# Process the labels. START
-			if line.find('#') > 0:
-				todo_labels = []
-				labels = line.count('#')
-				labels_start = line.find('#')
-				labels_end = len(line.rstrip('\r\n'))
-				if labels > 1:
-					label_string = line[labels_start:labels_end].split(' ')
-					for label in label_string:
-						start = 0
-						end = len(label)
-						todo_labels.append(label[start + 1:end])
-						mytodo.set_labels(todo_labels)
-				else:
-					todo_labels.append(line[labels_start + 1:labels_end])
+			todo_labels = []
+			words = line.split()
+			for word in words:
+				# Process the owner.
+				if word.find('@') > -1:
+					mytodo.set_assignee(word.strip('@'))
+				# Process the labels.
+				if word.find('#') > -1:
+					todo_labels.append(word.strip('#'))
 					mytodo.set_labels(todo_labels)
-			# Process the labels. End
+				# Process the milestones.
+				if word.find('*') > -1:
+					mytodo.set_milestone(word.strip('*'))
 
-			# Process the milestones. START
-			if line.find('*') > 0:
-				ms_start = line.find('*') + 1
-				ms_end = line.find(' ', ms_start)
-				todo_ms = line[ms_start:ms_end]
-			# Process the milestones. End
-
-			# Add them all together and pass back to the parent.
+		# Add them all together and pass back to the parent.
 		todo_array.append(mytodo)
 
 	def store_local_todos(repo, todo_array, project_dir):
@@ -180,15 +173,13 @@ class GitTodoFindCommand(sublime_plugin.TextCommand):
 				path = open(write_path).read()
 				for todos in todo_array:
 					for todo in todos:
-						issue = json.dumps(todo.__dict__) # JSON dump the object, for file write.
-						if mode == 'a':
-							if issue not in path: # Checks if it's already in the file.
-								if todo.review == False:
-									GitTodoFindCommand.process_todo(repo, todo)
-								file.write(issue + '\n')
+						if todo.review == False:
+							GitTodoFindCommand.process_todo(repo, todo)
+
+						issue = json.dumps(todo.__dict__)
+						if mode == 'a' and issue not in path: # Checks if it's already in the file.
+							file.write(issue + '\n')
 						else:
-							if todo.review == False:
-								GitTodoFindCommand.process_todo(repo, todo)
 							file.write(issue + '\n')
 		except Exception:
 			print(traceback.format_exc())
@@ -216,28 +207,72 @@ class GitTodoFindCommand(sublime_plugin.TextCommand):
 		return session
 
 	def create_issue(username, repo, session, todo):
-		# url = 'https://api.github.com/repos/' + username + '/' + repo + '/issues'
+		url = 'https://api.github.com/repos/' + username + '/' + repo + '/issues'
+		line = 'line: ' + str(todo.line)+ '.  File: ' + todo.filename + '.\n'
 		issue = {}
 		issue['title'] = todo.title
-		if todo.assignee is not None:
-			issue['assignee'] = todo.assignee
-		line = 'line: ' + str(todo.line)+ '.  File: ' + todo.filename + '.\n'
 		if todo.body is not None:
 			issue['body'] = line + todo.body
 		else:
 			issue['body'] = line
+		if todo.assignee is not None:
+			issue['assignee'] = todo.assignee
 		if todo.labels is not None:
 			issue['labels'] = todo.labels
 		if todo.milestone is not None:
-			pass
-			# issue['milestone'] = todo.milestone
+			# Only accepts integers.
+			issue['milestone'] = todo.milestone
+
 		req = session.post(url, json.dumps(issue))
 		return req.status_code
+		# For each created issue, make a callback to determine its number?
 
-# A Class for each Todo.
+	def edit_issue(username, repo, session, issue_num, todo):
+		url = 'https://api.github.com/repos/' + username + '/' + repo + '/issues'
+		update = {}
+		line = 'line: ' + str(todo.line)+ '.  File: ' + todo.filename + '.\n'
+		issue = {}
+		issue['title'] = todo.title
+		if todo.body is not None:
+			issue['body'] = line + todo.body
+		else:
+			issue['body'] = line
+		if todo.assignee is not None:
+			issue['assignee'] = todo.assignee
+		if todo.labels is not None:
+			issue['labels'] = todo.labels
+		if todo.milestone is not None:
+			# Only accepts integers.
+			issue['milestone'] = todo.milestone
+
+		req = session.post(url, json.dumps(update))
+		return req.status_code
+
+
+	def close_issue(username, repo, session, issue_num):
+		url = 'https://api.github.com/repos/' + username + '/' + repo + '/issues'
+		close = {}
+		close['state'] = 'close'
+		req = session.patch(url, json.dumps())
+		return req.status_code
+
+	def fetch_issues(username, repo, session):
+		url = 'https://api.github.com/repos/' + username + '/' + repo + '/issues'
+		req = session.get(url)
+		return req
+
+	def process_fetch(session):
+		response = GitTodoFindCommand.fetch_issues(session)
+		response_json = response.json()
+		response_length = len(response_json)
+		for issue in response:
+			pass
+			# Add to gitTodo.txt file.
+			# Check for duplicates.
+			# Update with issue numbers
+
 class Gittodo(object):
-	# Options and methods are self explanatory.
-	review = False # Whether or not to be submitted as an issue or just submitted to the gitTodo.txt for review.
+	review = False
 	filename = None
 	line = None
 	title = None
@@ -248,24 +283,32 @@ class Gittodo(object):
 
 	def set_review(self, review):
 		self.review = review
+		return
 
 	def set_filename(self, filename):
 		self.filename = filename
+		return
 
 	def set_line(self, line):
 		self.line = line
+		return
 
 	def set_title(self, title):
 		self.title = title
+		# return
 
 	def set_body(self, body):
 		self.body = body
+		return
 
 	def set_assignee(self, assignee):
 		self.assignee = assignee
+		return
 
 	def set_labels(self, labels):
 		self.labels = labels
+		return
 
 	def set_milestone(self, milestone):
 		self.milestone = milestone
+		return
