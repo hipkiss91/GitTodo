@@ -1,32 +1,34 @@
 # GitTodo
 Allows developers within SublimeText 3 to automatically publish issues to a public repo on github through the use of properly formatted TODO's.
 
-## v0.2.0 improvements:
+## v1.0.0 improvements:
 ```
-- Include milestones.
-- Transform 'todos' into one condition.
-- Transform array of files to filter in/out.
-- Define a classic annotation pattern.
-- Other (See messages/0.2.0.txt)
-- "Review" has been added as parameter. This means all TODO's will be written to file but only correctly formatted todo's will be submitted as an issue.
+- NEW FEATURE: Account for bugs using the prefix 'FIXME'.
+- Other (See messages/1.0.0.txt)  
 ```
 
 # Install
-GitTodo is currently only available here. I am looking at getting it in the sublime package control.
+GitTodo is currently only available here. It is currently being reviewed to be included in the Sublime Text Package Control. Once GitTodo has been approved it can be found under `GitTodo` in Package Control.
 
 #### Git Clone
 If you are forking this project, or for whatever reason do not want to use Package Control, you can install this package another way. First, go to your packages directory (Preferences -> Browse Packages) - then run git clone.
 
 # Usage
-`ctrl+alt+t` Initiates the command.
+`ctrl+alt+t` Initiates the command.  
+Any errors that may occur can be viewed in the Sublime Text Console `Ctrl+'`.
 
 ## Navigating results
 The list of `TODO's` generated for a given project can be reviewed, as JSON output, in the root of the project under the file name `gitTodo.txt`.
 
 ## TODO Format
-The current format of accepted `TODO's` are as follows:
-`TODO: [TITLE] (This is the description/body of the issue.) @Assignee #bug #minor *milestone`
-### Note: Minimum requirements for submitting an issue is the `[TITLE]`. Description, assignee, labels and milestones are optional.
+The current format of accepted `TODO's` are as follows:  
+`TODO: [TITLE] (This is the description/body of the issue.) @Assignee #bug #minor *milestone`  
+`FIXME's` have also been added to GitTodo and can also be accepted in the following format:  
+`FIXME: [TITLE] (This is the description/body of the issue.) @Assignee #bug #minor *milestone`  
+The current accepted format for milestones are integers. This requires a knowledge of the project milestones and their corresponding integer values. A key/value pair is being worked on which will assign either a date or title of the milestone to the integer for said milestone.  
+
+### Note: Minimum requirements for submitting an issue is the `[TITLE]`. Description, assignee, labels and milestones are optional.  
+### `FIXME` submitted issues are the same as `TODO` with the exception of being automatically assigned the label: `bug`. Further labels, for example priority, can be specified as well.
 
 
 # Config
@@ -34,37 +36,36 @@ An example of the current configuration is available in the plugin and is as bel
 
 ```
 {
-	"exclude_folders": [
-		".git",
-		"node_modules",
-		"images",
-		"fonts",
-		"lib",
-		"libs",
-		"Examples",
-		"sass",
-		"ie"
-	],
-	"exclude_files": [
-		"*.gitignore",
-		"*.json",
-		"*.md",
-		"*.txt",
-		"*.jpg",
-		"*.png",
-		"*.htc",
-		"*.svg",
-		"*.gif",
-		"*.min.js",
-		"*.min.css",
-		"*.map"
-	],
-	"github_details":{
-		"username": "hipkiss91",
-		"password": "password",
-		"token":    "token"
-	},
-	"projects_dir": "C:\\wamp64\\www\\"
+    "exclude_folders": [
+        ".git",
+        "node_modules",
+        "images",
+        "fonts",
+        "lib",
+        "libs",
+        "Examples",
+        "sass",
+        "ie"
+    ],
+    "exclude_files": [
+        "*.gitignore",
+        "*.json",
+        "*.md",
+        "*.txt",
+        "*.jpg",
+        "*.png",
+        "*.htc",
+        "*.svg",
+        "*.gif",
+        "*.min.js",
+        "*.min.css",
+        "*.map"
+    ],
+    "github_details":{
+        "username": "hipkiss91",
+        "password": "password"
+    },
+    "projects_dir": "C:\\wamp64\\www\\"
 }
 
 ```
@@ -76,7 +77,6 @@ An example of the current configuration is available in the plugin and is as bel
 # TODO: Other git accounts.
 # TODO: Change/Alter Issues
 # TODO: Close Issues
-# TODO: Account for bugs using the prefix 'FIXME'.
 ```
 
 
